@@ -87,55 +87,46 @@ const Home = () => {
             icon={<Sprout className="w-12 h-12 text-emerald-500" />}
             title="Hybrid ML + AI Engine"
             desc="Mathematical Machine Learning predicts viability, while Gemini LLM designs advanced Intercropping geometries."
-            delay={0.1}
           />
           <FeatureCard 
             icon={<Activity className="w-12 h-12 text-cyan-500" />}
             title="Live Weather Sync"
             desc="Automatically syncs 3-year historical climate averages and applies seasonal and irrigation offsets."
-            delay={0.3}
           />
           <FeatureCard 
             icon={<DollarSign className="w-12 h-12 text-amber-500" />}
             title="Autonomous Web Scraping"
             desc="Google Search Grounding scrapes the live internet to calculate absolute real-time ROI for 47 Indian crops."
-            delay={0.5}
           />
           <FeatureCard 
             icon={<CloudRain className="w-12 h-12 text-blue-500" />}
             title="Live Weather Integration"
             desc="Precise real-time recommendations based on hyper-local weather conditions."
-            delay={0.6}
           />
           <FeatureCard 
             icon={<Globe className="w-12 h-12 text-indigo-500" />}
             title="Accessibility & Localization"
             desc="11 regional language translations available and voice input for removing linguistic barriers."
-            delay={0.7}
           />
           <FeatureCard 
             icon={<LineChart className="w-12 h-12 text-green-500" />}
             title="Live Market Price Integration"
             desc="Better and precise ROI values and real-time profit analysis."
-            delay={0.8}
           />
           <FeatureCard 
             icon={<Scan className="w-12 h-12 text-purple-500" />}
             title="AI Vision & Disease Detection"
             desc="AI Vision-based soil detection and advisory + Crop disease detection system."
-            delay={0.9}
           />
           <FeatureCard 
             icon={<FlaskConical className="w-12 h-12 text-yellow-500" />}
             title="Smart Fertilizer Plans"
             desc="All input parameters passed into AI to give enhanced and parameter combination-specific results."
-            delay={1.0}
           />
           <FeatureCard 
             icon={<BookOpen className="w-12 h-12 text-orange-500" />}
             title="Extensive Crop Catalog"
             desc="Highly detailed agronomic information and requirements for 47 different crops."
-            delay={1.1}
           />
         </motion.div>
 
