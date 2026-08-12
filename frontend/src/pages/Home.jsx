@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sprout, Activity, DollarSign, ArrowRight } from 'lucide-react';
+import { Sprout, Activity, DollarSign, ArrowRight, Globe, Mic, LineChart, Scan, FlaskConical, BookOpen, CloudRain } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 
@@ -100,6 +100,42 @@ const Home = () => {
             title="Autonomous Web Scraping"
             desc="Google Search Grounding scrapes the live internet to calculate absolute real-time ROI for 47 Indian crops."
             delay={0.5}
+          />
+          <FeatureCard 
+            icon={<CloudRain className="w-12 h-12 text-blue-500" />}
+            title="Live Weather Integration"
+            desc="Precise real-time recommendations based on hyper-local weather conditions."
+            delay={0.6}
+          />
+          <FeatureCard 
+            icon={<Globe className="w-12 h-12 text-indigo-500" />}
+            title="Accessibility & Localization"
+            desc="11 regional language translations available and voice input for removing linguistic barriers."
+            delay={0.7}
+          />
+          <FeatureCard 
+            icon={<LineChart className="w-12 h-12 text-green-500" />}
+            title="Live Market Price Integration"
+            desc="Better and precise ROI values and real-time profit analysis."
+            delay={0.8}
+          />
+          <FeatureCard 
+            icon={<Scan className="w-12 h-12 text-purple-500" />}
+            title="AI Vision & Disease Detection"
+            desc="AI Vision-based soil detection and advisory + Crop disease detection system."
+            delay={0.9}
+          />
+          <FeatureCard 
+            icon={<FlaskConical className="w-12 h-12 text-yellow-500" />}
+            title="Smart Fertilizer Plans"
+            desc="All input parameters passed into AI to give enhanced and parameter combination-specific results."
+            delay={1.0}
+          />
+          <FeatureCard 
+            icon={<BookOpen className="w-12 h-12 text-orange-500" />}
+            title="Extensive Crop Catalog"
+            desc="Highly detailed agronomic information and requirements for 47 different crops."
+            delay={1.1}
           />
         </motion.div>
 
