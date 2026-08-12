@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Download, Share2, Sprout, AlertCircle, Droplets, Leaf, Calendar, Wallet } from 'lucide-react';
-import { getFertilizerPlan } from '../utils/fertilizerLogic';
+import { Download, Loader2, Share2, Sprout, AlertCircle, Droplets, Leaf, Calendar, Wallet } from 'lucide-react';
+
 import { generateFertilizerPDF } from '../utils/pdfExport';
 import toast from 'react-hot-toast';
 import CustomSelect from '../components/CustomSelect';
@@ -29,6 +29,7 @@ const FertilizerReportPage = () => {
   });
   const [showSoilTest, setShowSoilTest] = useState(false);
   const [report, setReport] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Auto-detect season based on current month
@@ -78,36 +79,38 @@ const FertilizerReportPage = () => {
     }));
   };
 
-  const handleGenerate = (e) => {
+  const handleGenerate = async (e) => {
     e.preventDefault();
     if (!formData.landArea || formData.landArea <= 0) {
       toast.error("Please enter a valid land area greater than 0.");
       return;
     }
 
+    setIsLoading(true);
     try {
-      const plan = getFertilizerPlan(
-        formData.crop,
-        formData.growthStage,
-        parseFloat(formData.landArea),
-        formData.unit,
-        {
-          soilTestData: showSoilTest ? formData.soilTest : null,
-          irrigationType: formData.irrigationType,
-          previousCrop: formData.previousCrop,
-          season: formData.season,
-          budgetPreference: formData.budgetPreference
-        }
-      );
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/ai/fertilizer-plan`, {
+        crop: formData.crop,
+        growthStage: formData.growthStage,
+        landArea: parseFloat(formData.landArea),
+        unit: formData.unit,
+        soilTestData: showSoilTest ? formData.soilTest : null,
+        irrigationType: formData.irrigationType,
+        previousCrop: formData.previousCrop,
+        season: formData.season,
+        budgetPreference: formData.budgetPreference
+      });
       
       setReport({
         ...formData,
-        ...plan
+        ...response.data
       });
       
-      toast.success("Report generated successfully!");
+      toast.success("AI Report generated successfully!");
     } catch (err) {
-      toast.error(err.message || "Failed to generate report.");
+      console.error(err);
+      toast.error("Failed to generate AI report.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -311,9 +314,9 @@ const FertilizerReportPage = () => {
               </motion.div>
             )}
 
-            <button type="submit" className="glass-button w-full mt-6 py-3 flex items-center justify-center gap-2">
-              <Sprout className="w-5 h-5" />
-              Generate Report
+            <button type="submit" disabled={isLoading} className="glass-button w-full mt-6 py-3 flex items-center justify-center gap-2 disabled:opacity-50">
+              {isLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Sprout className="w-5 h-5" />}
+              {isLoading ? 'Analyzing Parameters...' : 'Generate AI Report'}
             </button>
           </form>
         </motion.div>
