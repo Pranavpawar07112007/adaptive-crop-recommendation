@@ -18,7 +18,7 @@ const TopBar = ({ useLiveWeather, toggleLiveWeather, locationName, locLoading, l
       initial={{ y: -60, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 120, damping: 20 }}
-      className="fixed top-3 left-3 md:left-3 right-3 z-40 flex items-center justify-between gap-2
+      className="fixed top-3 left-3 md:left-24 right-3 z-40 flex items-center justify-between gap-2
                  bg-white/20 dark:bg-[#1B2A17]/30 backdrop-blur-2xl
                  border border-white/30 dark:border-white/10
                  shadow-[0_8px_40px_rgba(0,0,0,0.15)] dark:shadow-[0_8px_40px_rgba(0,0,0,0.4)]
