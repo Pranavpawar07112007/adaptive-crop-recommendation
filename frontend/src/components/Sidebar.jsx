@@ -30,7 +30,7 @@ const Sidebar = () => {
                    rounded-[2rem] p-3 w-16"
       >
         {/* Logo */}
-        <NavLink to="/dashboard" className="mb-2 flex items-center justify-center">
+        <NavLink to="/dashboard" className="mb-6 flex items-center justify-center">
           <motion.div
             whileHover={{ rotate: 15, scale: 1.1 }}
             className="w-10 h-10 rounded-2xl bg-farm-primary flex items-center justify-center shadow-lg"
