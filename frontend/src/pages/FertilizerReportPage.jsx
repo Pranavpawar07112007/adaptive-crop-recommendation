@@ -160,104 +160,10 @@ const FertilizerReportPage = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Report Section */}
-        <motion.div 
-          className="lg:col-span-1 glass-panel overflow-visible"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1 }}
-        >
-          {report ? (
-            <div className="glass-panel overflow-visible p-6 h-full flex flex-col relative">
-              {/* Decorative background element */}
-              <div className="absolute top-0 right-0 w-64 h-64 bg-farm-primary/5 dark:bg-farm-accent-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
-              
-              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-10">
-                <div>
-                  <h2 className="text-2xl font-bold text-farm-primary dark:text-white">Recommendation Report</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                    {report.crop} • {report.landArea} {report.unit}(s) • {report.growthStage} stage
-                  </p>
-                </div>
-                
-                {report.found && (
-                  <div className="flex gap-2 w-full sm:w-auto">
-                    <button onClick={handleShare} className="glass-button !bg-white/40 dark:!bg-white/10 flex-1 sm:flex-none flex justify-center items-center gap-2 text-sm">
-                      <Share2 className="w-4 h-4" /> Share
-                    </button>
-                    <button onClick={handleExportPDF} className="glass-button flex-1 sm:flex-none flex justify-center items-center gap-2 text-sm !bg-farm-primary !text-white">
-                      <Download className="w-4 h-4" /> Save PDF
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              {report.found ? (
-                <div className="relative z-10 flex-1">
-                  <div className="overflow-x-auto rounded-xl border border-white/20 dark:border-white/10 shadow-sm bg-white/40 dark:bg-[#1B2A17]/40 mb-6">
-                    <table className="w-full text-right border-collapse">
-                      <thead>
-                        <tr className="bg-farm-primary/10 dark:bg-farm-primary/30">
-                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Fertilizer</th>
-                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Dosage</th>
-                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Method</th>
-                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Timing</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {report.fertilizers.map((f, i) => (
-                          <tr key={i} className="border-b border-white/10 dark:border-white/5 last:border-0 hover:bg-white/20 dark:hover:bg-white/5 transition-colors">
-                            <td className="p-4 text-sm font-medium text-slate-800 dark:text-slate-200">{f.name}</td>
-                            <td className="p-4 text-sm text-slate-700 dark:text-slate-300 font-semibold">{f.dosage}</td>
-                            <td className="p-4 text-sm text-slate-600 dark:text-slate-400">{f.method}</td>
-                            <td className="p-4 text-sm text-slate-600 dark:text-slate-400">{f.timing}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  {report.notes && report.notes.length > 0 && (
-                    <div className="bg-[#FAF3E0]/50 dark:bg-[#2A3F24]/50 rounded-xl p-5 border border-farm-primary/20 dark:border-farm-primary/30">
-                      <h4 className="font-bold text-farm-primary dark:text-farm-accent-gold flex items-center gap-2 mb-3">
-                        <AlertCircle className="w-4 h-4" /> Important Notes
-                      </h4>
-                      <ul className="space-y-2">
-                        {report.notes.map((note, idx) => (
-                          <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
-                            <span className="text-farm-primary dark:text-farm-accent-gold mt-0.5">•</span>
-                            <span>{note}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              ) : (
-                <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-white/20 dark:bg-black/20 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-                  <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
-                    <Sprout className="w-8 h-8 text-slate-400" />
-                  </div>
-                  <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300 mb-2">{report.message}</h3>
-                  <p className="text-sm text-slate-500 max-w-md">Try selecting a different crop or growth stage, or check back later for updated recommendations.</p>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="glass-card p-6 h-full min-h-[400px] flex flex-col items-center justify-center text-center opacity-70">
-              <div className="w-20 h-20 rounded-full bg-farm-primary/10 dark:bg-farm-primary/20 flex items-center justify-center mb-6">
-                <Sprout className="w-10 h-10 text-farm-primary dark:text-farm-accent-gold" />
-              </div>
-              <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Ready to Plan</h3>
-              <p className="text-slate-500 dark:text-slate-400 max-w-sm">Enter your field details on the right and click Generate Report to see your customized fertilizer plan.</p>
-            </div>
-          )}
-        </motion.div>
-
-      
+      <div className="flex flex-col gap-8">
         {/* Form Section */}
         <motion.div 
-          className="lg:col-span-2 glass-panel p-6 overflow-visible"
+          className="glass-panel p-6 overflow-visible"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
@@ -412,7 +318,102 @@ const FertilizerReportPage = () => {
           </form>
         </motion.div>
 
-</div>
+
+        {/* Report Section */}
+        <motion.div 
+          className="glass-panel overflow-visible"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1 }}
+        >
+          {report ? (
+            <div className="glass-panel overflow-visible p-6 h-full flex flex-col relative">
+              {/* Decorative background element */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-farm-primary/5 dark:bg-farm-accent-gold/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+              
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8 relative z-10">
+                <div>
+                  <h2 className="text-2xl font-bold text-farm-primary dark:text-white">Recommendation Report</h2>
+                  <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                    {report.crop} • {report.landArea} {report.unit}(s) • {report.growthStage} stage
+                  </p>
+                </div>
+                
+                {report.found && (
+                  <div className="flex gap-2 w-full sm:w-auto">
+                    <button onClick={handleShare} className="glass-button !bg-white/40 dark:!bg-white/10 flex-1 sm:flex-none flex justify-center items-center gap-2 text-sm">
+                      <Share2 className="w-4 h-4" /> Share
+                    </button>
+                    <button onClick={handleExportPDF} className="glass-button flex-1 sm:flex-none flex justify-center items-center gap-2 text-sm !bg-farm-primary !text-white">
+                      <Download className="w-4 h-4" /> Save PDF
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {report.found ? (
+                <div className="relative z-10 flex-1">
+                  <div className="overflow-x-auto rounded-xl border border-white/20 dark:border-white/10 shadow-sm bg-white/40 dark:bg-[#1B2A17]/40 mb-6">
+                    <table className="w-full text-right border-collapse">
+                      <thead>
+                        <tr className="bg-farm-primary/10 dark:bg-farm-primary/30">
+                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Fertilizer</th>
+                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Dosage</th>
+                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Method</th>
+                          <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Timing</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {report.fertilizers.map((f, i) => (
+                          <tr key={i} className="border-b border-white/10 dark:border-white/5 last:border-0 hover:bg-white/20 dark:hover:bg-white/5 transition-colors">
+                            <td className="p-4 text-sm font-medium text-slate-800 dark:text-slate-200">{f.name}</td>
+                            <td className="p-4 text-sm text-slate-700 dark:text-slate-300 font-semibold">{f.dosage}</td>
+                            <td className="p-4 text-sm text-slate-600 dark:text-slate-400">{f.method}</td>
+                            <td className="p-4 text-sm text-slate-600 dark:text-slate-400">{f.timing}</td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {report.notes && report.notes.length > 0 && (
+                    <div className="bg-[#FAF3E0]/50 dark:bg-[#2A3F24]/50 rounded-xl p-5 border border-farm-primary/20 dark:border-farm-primary/30">
+                      <h4 className="font-bold text-farm-primary dark:text-farm-accent-gold flex items-center gap-2 mb-3">
+                        <AlertCircle className="w-4 h-4" /> Important Notes
+                      </h4>
+                      <ul className="space-y-2">
+                        {report.notes.map((note, idx) => (
+                          <li key={idx} className="text-sm text-slate-700 dark:text-slate-300 flex items-start gap-2">
+                            <span className="text-farm-primary dark:text-farm-accent-gold mt-0.5">•</span>
+                            <span>{note}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="flex-1 flex flex-col items-center justify-center text-center p-8 bg-white/20 dark:bg-black/20 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                  <div className="w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mb-4">
+                    <Sprout className="w-8 h-8 text-slate-400" />
+                  </div>
+                  <h3 className="text-lg font-bold text-slate-700 dark:text-slate-300 mb-2">{report.message}</h3>
+                  <p className="text-sm text-slate-500 max-w-md">Try selecting a different crop or growth stage, or check back later for updated recommendations.</p>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="glass-card p-6 h-full min-h-[400px] flex flex-col items-center justify-center text-center opacity-70">
+              <div className="w-20 h-20 rounded-full bg-farm-primary/10 dark:bg-farm-primary/20 flex items-center justify-center mb-6">
+                <Sprout className="w-10 h-10 text-farm-primary dark:text-farm-accent-gold" />
+              </div>
+              <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Ready to Plan</h3>
+              <p className="text-slate-500 dark:text-slate-400 max-w-sm">Enter your field details above and click Generate Report to see your customized fertilizer plan.</p>
+            </div>
+          )}
+        </motion.div>
+
+      
+        </div>
     </div>
   );
 };
