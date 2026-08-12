@@ -161,182 +161,9 @@ const FertilizerReportPage = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Form Section */}
-        <motion.div 
-          className="lg:col-span-1 glass-panel p-6 overflow-visible"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-        >
-          <h2 className="text-xl font-bold text-farm-primary dark:text-white mb-6">Field Details</h2>
-          <form onSubmit={handleGenerate} className="space-y-5">
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Crop</label>
-                <CustomSelect 
-                  value={formData.crop} 
-                  onChange={(val) => setFormValue('crop', val)} 
-                  options={CROPS.map(c => ({ value: c, label: c }))} 
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center justify-between" title="Helps adjust nitrogen recommendations if a legume was grown.">
-                  <span>Previous Crop</span>
-                  <span className="text-[10px] font-normal text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Optional</span>
-                </label>
-                <CustomSelect 
-                  value={formData.previousCrop} 
-                  onChange={(val) => setFormValue('previousCrop', val)} 
-                  options={[
-                    { value: '', label: 'None / Fallow' },
-                    { value: 'Soybean', label: 'Soybean' },
-                    { value: 'Gram', label: 'Gram (Chickpea)' },
-                    { value: 'Wheat', label: 'Wheat' },
-                    { value: 'Maize', label: 'Maize' },
-                    { value: 'Other', label: 'Other Non-Legume' }
-                  ]}
-                  placeholder="Select previous crop"
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Land Area</label>
-                <input 
-                  type="number" 
-                  step="0.01" 
-                  name="landArea" 
-                  value={formData.landArea} 
-                  onChange={handleInputChange} 
-                  className="glass-input w-full h-11"
-                  placeholder="e.g. 2.5"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Unit</label>
-                <CustomSelect 
-                  value={formData.unit} 
-                  onChange={(val) => setFormValue('unit', val)} 
-                  options={[
-                    { value: 'acre', label: 'Acres' },
-                    { value: 'hectare', label: 'Hectares' }
-                  ]}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Growth Stage</label>
-                <CustomSelect 
-                  value={formData.growthStage} 
-                  onChange={(val) => setFormValue('growthStage', val)} 
-                  options={GROWTH_STAGES.map(s => ({ value: s, label: s.charAt(0).toUpperCase() + s.slice(1) }))} 
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Soil Type</label>
-                <CustomSelect 
-                  value={formData.soilType} 
-                  onChange={(val) => setFormValue('soilType', val)} 
-                  options={SOIL_TYPES.map(s => ({ value: s, label: s.charAt(0).toUpperCase() + s.slice(1) }))} 
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Season</label>
-                <CustomSelect 
-                  icon={<Calendar className="w-4 h-4" />}
-                  value={formData.season} 
-                  onChange={(val) => setFormValue('season', val)} 
-                  options={[
-                    { value: 'Kharif', label: 'Kharif' },
-                    { value: 'Rabi', label: 'Rabi' },
-                    { value: 'Zaid', label: 'Zaid' }
-                  ]}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Irrigation</label>
-                <CustomSelect 
-                  icon={<Droplets className="w-4 h-4" />}
-                  value={formData.irrigationType} 
-                  onChange={(val) => setFormValue('irrigationType', val)} 
-                  options={[
-                    { value: 'Irrigated', label: 'Irrigated' },
-                    { value: 'Rainfed', label: 'Rainfed' },
-                    { value: 'Drip', label: 'Drip' },
-                    { value: 'Sprinkler', label: 'Sprinkler' }
-                  ]}
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Budget</label>
-                <CustomSelect 
-                  icon={<Wallet className="w-4 h-4" />}
-                  value={formData.budgetPreference} 
-                  onChange={(val) => setFormValue('budgetPreference', val)} 
-                  options={[
-                    { value: 'Standard', label: 'Standard' },
-                    { value: 'Low-cost / Organic-first', label: 'Organic-first' }
-                  ]}
-                />
-              </div>
-            </div>
-
-            <div className="pt-2">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input 
-                  type="checkbox" 
-                  checked={showSoilTest} 
-                  onChange={(e) => setShowSoilTest(e.target.checked)} 
-                  className="rounded text-farm-primary focus:ring-farm-primary border-slate-300 bg-white/50"
-                />
-                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">I have recent soil test data</span>
-              </label>
-            </div>
-
-            {showSoilTest && (
-              <motion.div 
-                initial={{ height: 0, opacity: 0 }} 
-                animate={{ height: 'auto', opacity: 1 }} 
-                className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 bg-slate-50 dark:bg-black/20 p-4 rounded-xl border border-slate-200 dark:border-white/10"
-              >
-                {['N', 'P', 'K', 'pH'].map(nutrient => (
-                  <div key={nutrient}>
-                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">{nutrient} Level</label>
-                    <input 
-                      type="number" 
-                      step="0.1"
-                      name={nutrient} 
-                      value={formData.soilTest[nutrient]} 
-                      onChange={handleSoilTestChange} 
-                      className="glass-input w-full h-9 text-sm px-2 bg-white/70 dark:bg-slate-800/70"
-                      placeholder="e.g. 50"
-                    />
-                  </div>
-                ))}
-                <div className="col-span-2 sm:col-span-4 mt-1 text-xs text-slate-500 italic flex items-center gap-1">
-                  <AlertCircle className="w-3 h-3" /> Note: Values will adjust fertilizer NPK recommendations.
-                </div>
-              </motion.div>
-            )}
-
-            <button type="submit" className="glass-button w-full mt-6 py-3 flex items-center justify-center gap-2">
-              <Sprout className="w-5 h-5" />
-              Generate Report
-            </button>
-          </form>
-        </motion.div>
-
         {/* Report Section */}
         <motion.div 
-          className="lg:col-span-2 glass-panel overflow-visible"
+          className="lg:col-span-1 glass-panel overflow-visible"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1 }}
         >
@@ -368,7 +195,7 @@ const FertilizerReportPage = () => {
               {report.found ? (
                 <div className="relative z-10 flex-1">
                   <div className="overflow-x-auto rounded-xl border border-white/20 dark:border-white/10 shadow-sm bg-white/40 dark:bg-[#1B2A17]/40 mb-6">
-                    <table className="w-full text-left border-collapse">
+                    <table className="w-full text-right border-collapse">
                       <thead>
                         <tr className="bg-farm-primary/10 dark:bg-farm-primary/30">
                           <th className="p-4 text-sm font-semibold text-farm-primary dark:text-farm-accent-gold border-b border-white/20 dark:border-white/5">Fertilizer</th>
@@ -422,12 +249,170 @@ const FertilizerReportPage = () => {
                 <Sprout className="w-10 h-10 text-farm-primary dark:text-farm-accent-gold" />
               </div>
               <h3 className="text-xl font-bold text-slate-700 dark:text-slate-300 mb-2">Ready to Plan</h3>
-              <p className="text-slate-500 dark:text-slate-400 max-w-sm">Enter your field details on the left and click Generate Report to see your customized fertilizer plan.</p>
+              <p className="text-slate-500 dark:text-slate-400 max-w-sm">Enter your field details on the right and click Generate Report to see your customized fertilizer plan.</p>
             </div>
           )}
         </motion.div>
 
-      </div>
+      
+        {/* Form Section */}
+        <motion.div 
+          className="lg:col-span-2 glass-panel p-6 overflow-visible"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <h2 className="text-xl font-bold text-farm-primary dark:text-white mb-6">Field Details</h2>
+          <form onSubmit={handleGenerate} className="space-y-5">
+            
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Crop</label>
+                <CustomSelect 
+                  value={formData.crop} 
+                  onChange={(val) => setFormValue('crop', val)} 
+                  options={CROPS.map(c => ({ value: c, label: c }))} 
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1 flex items-center justify-between" title="Helps adjust nitrogen recommendations if a legume was grown.">
+                  <span>Previous Crop Sown</span>
+                  <span className="text-[10px] font-normal text-slate-500 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Optional</span>
+                </label>
+                <CustomSelect 
+                  value={formData.previousCrop} 
+                  onChange={(val) => setFormValue('previousCrop', val)} 
+                  options={[
+                    { value: '', label: 'None / Fallow' },
+                    { value: 'Soybean', label: 'Soybean' },
+                    { value: 'Gram', label: 'Gram (Chickpea)' },
+                    { value: 'Wheat', label: 'Wheat' },
+                    { value: 'Maize', label: 'Maize' },
+                    { value: 'Other', label: 'Other Non-Legume' }
+                  ]}
+                  placeholder="Select previous crop"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Land Area</label>
+                <div className="flex gap-2">
+                  <input 
+                    type="number" 
+                    step="0.01" 
+                    name="landArea" 
+                    value={formData.landArea} 
+                    onChange={handleInputChange} 
+                    className="glass-input w-full h-11"
+                    placeholder="e.g. 2.5"
+                    required
+                  />
+                  <div className="w-1/3">
+                    <CustomSelect 
+                      value={formData.unit} 
+                      onChange={(val) => setFormValue('unit', val)} 
+                      options={[
+                        { value: 'acre', label: 'Acres' },
+                        { value: 'hectare', label: 'Hectares' }
+                      ]}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Growth Stage</label>
+                <CustomSelect 
+                  value={formData.growthStage} 
+                  onChange={(val) => setFormValue('growthStage', val)} 
+                  options={GROWTH_STAGES.map(s => ({ value: s, label: s.charAt(0).toUpperCase() + s.slice(1) }))} 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Soil Type</label>
+                <CustomSelect 
+                  value={formData.soilType} 
+                  onChange={(val) => setFormValue('soilType', val)} 
+                  options={SOIL_TYPES.map(s => ({ value: s, label: s.charAt(0).toUpperCase() + s.slice(1) }))} 
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Season</label>
+                <CustomSelect 
+                  icon={<Calendar className="w-4 h-4" />}
+                  value={formData.season} 
+                  onChange={(val) => setFormValue('season', val)} 
+                  options={[
+                    { value: 'Kharif', label: 'Kharif' },
+                    { value: 'Rabi', label: 'Rabi' },
+                    { value: 'Zaid', label: 'Zaid' }
+                  ]}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-1">Irrigation</label>
+                <CustomSelect 
+                  icon={<Droplets className="w-4 h-4" />}
+                  value={formData.irrigationType} 
+                  onChange={(val) => setFormValue('irrigationType', val)} 
+                  options={[
+                    { value: 'Irrigated', label: 'Irrigated' },
+                    { value: 'Rainfed', label: 'Rainfed' },
+                    { value: 'Drip', label: 'Drip' },
+                    { value: 'Sprinkler', label: 'Sprinkler' }
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div className="pt-2">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input 
+                  type="checkbox" 
+                  checked={showSoilTest} 
+                  onChange={(e) => setShowSoilTest(e.target.checked)} 
+                  className="rounded text-farm-primary focus:ring-farm-primary border-slate-300 bg-white/50"
+                />
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">I have latest soil data</span>
+              </label>
+            </div>
+
+            {showSoilTest && (
+              <motion.div 
+                initial={{ height: 0, opacity: 0 }} 
+                animate={{ height: 'auto', opacity: 1 }} 
+                className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 bg-slate-50 dark:bg-black/20 p-4 rounded-xl border border-slate-200 dark:border-white/10"
+              >
+                {['N', 'P', 'K', 'pH'].map(nutrient => (
+                  <div key={nutrient}>
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">{nutrient} Level</label>
+                    <input 
+                      type="number" 
+                      step="0.1"
+                      name={nutrient} 
+                      value={formData.soilTest[nutrient]} 
+                      onChange={handleSoilTestChange} 
+                      className="glass-input w-full h-9 text-sm px-2 bg-white/70 dark:bg-slate-800/70"
+                      placeholder="e.g. 50"
+                    />
+                  </div>
+                ))}
+                <div className="col-span-2 sm:col-span-4 mt-1 text-xs text-slate-500 italic flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" /> Note: Values will adjust fertilizer NPK recommendations.
+                </div>
+              </motion.div>
+            )}
+
+            <button type="submit" className="glass-button w-full mt-6 py-3 flex items-center justify-center gap-2">
+              <Sprout className="w-5 h-5" />
+              Generate Report
+            </button>
+          </form>
+        </motion.div>
+
+</div>
     </div>
   );
 };
