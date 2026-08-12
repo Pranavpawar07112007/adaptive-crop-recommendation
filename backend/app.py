@@ -30,7 +30,7 @@ from model_pipeline import CropPredictor
 from services.weather import get_weather, get_climate_forecast
 from services.geo import reverse_geocode
 from services.pest_rules import evaluate_risk
-from services.ai_service import get_comprehensive_analysis, parse_voice_input
+from services.ai_service import get_comprehensive_analysis, parse_voice_input, get_ai_fertilizer_plan
 from services.subsidy import get_dynamic_subsidies
 from services.market import get_dynamic_market_prices, fetch_raw_mandi_records
 from services.vision import analyze_soil_image, analyze_disease_image
@@ -672,6 +672,18 @@ async def delete_history(record_id: str, user=Depends(get_current_user)):
 # ═══════════════════════════════════════════════════════════════════════════════
 # ENTRYPOINT
 # ═══════════════════════════════════════════════════════════════════════════════
+
+
+@app.post("/api/ai/fertilizer-plan")
+async def generate_fertilizer_plan(request: Request):
+    try:
+        data = await request.json()
+        result = await get_ai_fertilizer_plan(data)
+        return result
+    except Exception as e:
+        print(f"Error in fertilizer AI endpoint: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     import uvicorn

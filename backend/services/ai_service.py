@@ -149,3 +149,54 @@ Return ONLY a valid JSON object, no extra text:
     except Exception as exc:
         print(f"[Groq] Voice parse error: {exc}")
         return {"extracted": {}, "summary": "Sorry, I couldn't understand those values. Please try again or use the sliders."}
+
+
+async def get_ai_fertilizer_plan(inputs: dict) -> dict:
+    prompt = f"""You are a Senior AI Agronomist specializing in Indian agriculture. 
+A farmer needs a highly optimized, parameter-specific fertilizer plan based on the following detailed farm inputs:
+{json.dumps(inputs, indent=2)}
+
+Based on these specific conditions (considering the crop, exact land area, growth stage, soil type, NPK levels, irrigation type, and season), generate a precise fertilizer recommendation.
+
+If the user provided recent soil test data (N, P, K, pH), strictly adjust your recommended dosages (e.g., lower Nitrogen dosage if soil N is high, etc.).
+If previous crop was a legume, account for residual nitrogen and lower the urea requirement.
+
+Return exactly one valid JSON object matching the following structure:
+{{
+  "found": true,
+  "crop": "Crop Name",
+  "growthStage": "Growth Stage",
+  "fertilizers": [
+    {{
+      "name": "Fertilizer Name (e.g., Urea, DAP, MOP, FYM)",
+      "dosage": "Specific scaled dosage for the entire land area (e.g., '50 kg')",
+      "method": "Application method (e.g., Basal, Top dressing, Fertigation)",
+      "timing": "When to apply"
+    }}
+  ],
+  "notes": [
+    "A specific agronomic note or tip based on the provided inputs (e.g., specific to the season, irrigation type, or soil conditions).",
+    "Another note..."
+  ]
+}}
+
+Ensure the 'dosage' strings explicitly state the amount for the FULL land area requested ({inputs.get('landArea', '1')} {inputs.get('unit', 'acre')}s). Do not include any extra text outside the JSON.
+"""
+    try:
+        client = _groq_client()
+        response = await client.chat.completions.create(
+            messages=[{"role": "user", "content": prompt}],
+            model="llama-3.3-70b-versatile",
+            temperature=0.3,
+            response_format={"type": "json_object"},
+        )
+        content = response.choices[0].message.content or "{}"
+        return json.loads(content)
+    except Exception as exc:
+        print(f"[Groq] Fertilizer AI error: {exc}")
+        return {
+            "found": False,
+            "message": "AI failed to generate a plan. Please try again.",
+            "fertilizers": [],
+            "notes": []
+        }
