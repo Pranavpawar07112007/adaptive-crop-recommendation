@@ -6,7 +6,7 @@ import base64
 import json
 import google.generativeai as genai
 
-GEMINI_MODEL = "gemini-1.5-flash"
+GEMINI_MODEL = "gemini-3.6-flash"
 
 
 def _configure():
@@ -39,7 +39,10 @@ Respond STRICTLY in the following JSON format, and nothing else. Do not use mark
 If you are unsure but the image is clearly soil, provide the closest educated guess for a typical Indian farm soil.
 """
         image_data = {"mime_type": mime_type, "data": base64.b64decode(base64_image)}
-        response = model.generate_content([prompt, image_data])
+        response = model.generate_content(
+            [prompt, image_data],
+            generation_config={"response_mime_type": "application/json"}
+        )
         text = response.text.replace("```json", "").replace("```", "").strip()
         parsed = json.loads(text)
         if parsed.get("isInvalid"):
@@ -48,8 +51,8 @@ If you are unsure but the image is clearly soil, provide the closest educated gu
     except ValueError:
         raise
     except Exception as exc:
-        print(f"[Vision/Soil] Error: {exc}, using fallback mock data.")
-        return {"soilType": "loamy", "N": 85, "P": 42, "K": 120, "pH": 6.5}
+        print(f"[Vision/Soil] Error: {exc}")
+        raise exc
 
 
 async def analyze_disease_image(base64_image: str, mime_type: str = "image/jpeg") -> dict:
@@ -72,16 +75,12 @@ Respond STRICTLY in the following JSON format, and nothing else. Do not use mark
 If you are unsure, provide your best educated guess while strictly adhering to the JSON format.
 """
         image_data = {"mime_type": mime_type, "data": base64.b64decode(base64_image)}
-        response = model.generate_content([prompt, image_data])
+        response = model.generate_content(
+            [prompt, image_data],
+            generation_config={"response_mime_type": "application/json"}
+        )
         text = response.text.replace("```json", "").replace("```", "").strip()
         return json.loads(text)
     except Exception as exc:
-        print(f"[Vision/Disease] Error: {exc}, using fallback mock data.")
-        return {
-            "diseaseName": "Early Blight (Mock)",
-            "confidence": 88,
-            "description": "Dark, concentric rings on older leaves, typical of Alternaria solani infection.",
-            "organicTreatments": ["Copper-based fungicides", "Neem oil application", "Remove infected leaves"],
-            "chemicalTreatments": ["Chlorothalonil", "Mancozeb"],
-            "preventativeMeasures": ["Crop rotation", "Drip irrigation to keep leaves dry", "Proper plant spacing"],
-        }
+        print(f"[Vision/Disease] Error: {exc}")
+        raise exc

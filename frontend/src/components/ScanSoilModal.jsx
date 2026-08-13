@@ -3,10 +3,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Camera, Upload, X, Loader2, Image as ImageIcon, AlertCircle, CheckCircle2, Leaf, ThumbsUp, ThumbsDown, Info } from 'lucide-react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import CROP_DETAILS from '../data/cropDetailData';
 
 const ScanSoilModal = ({ isOpen, onClose }) => {
   const { token } = useAuth();
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('camera'); // 'camera' or 'upload'
   const [isScanning, setIsScanning] = useState(false);
   const [error, setError] = useState(null);
@@ -330,7 +332,16 @@ const ScanSoilModal = ({ isOpen, onClose }) => {
                     </div>
                   )}
 
-                  <div className="pt-2">
+                  <div className="pt-2 flex flex-col gap-3">
+                    <button 
+                      onClick={() => {
+                        navigate('/dashboard', { state: { scanData: scanResult } });
+                        onClose();
+                      }} 
+                      className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl shadow-lg transition-all active:scale-95 text-lg flex justify-center items-center gap-2"
+                    >
+                      <CheckCircle2 className="w-5 h-5" /> Use Values in Dashboard
+                    </button>
                     <button onClick={onClose} className="w-full py-4 bg-slate-800 hover:bg-slate-900 dark:bg-white dark:hover:bg-slate-200 text-white dark:text-slate-900 font-bold rounded-xl shadow-lg transition-all active:scale-95 text-lg">
                       Close Report
                     </button>
